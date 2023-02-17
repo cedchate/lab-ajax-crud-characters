@@ -25,10 +25,19 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
 	/**Your code goes here */
 	try {
-		const erros = ""
-	if(!req.body.name || !req.body.occupation || !req.body.weapon){
-		return res.status(400).json({errorMessage: "please fill all the fills"})
-	}
+		let errors = ""
+		if(!req.body.name) {
+			errors+= req.body.name;
+		}
+		if(!req.body.occupation){
+			errors+= ' '+req.body.occupation
+		}
+		if(!req.body.weapon){
+			errors+= ' '+req.body.weapon;
+		}
+		if(errors!== ''){
+			return res.status(400).json({errorMessage: `please fill ${errors}`});
+		}
 		const createdCharacter= {
 			name: req.body.name,
 			occupation: req.body.occupation,
@@ -96,6 +105,7 @@ router.delete('/:id', async (req, res, next) => {
 		await Character.findByIdAndDelete(req.params.id);
 		res.json({message: "Character has been successfully deleted"});
 	} catch (error) {
+		res.json({message: "Character not found"});
 		next(error)
 	}
 })

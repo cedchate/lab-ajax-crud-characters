@@ -57,6 +57,7 @@
       }
     } catch (error) {
       console.error(error);
+      document.querySelector('#delete-one').style.backgroundColor = "red";
     }
   });
 
